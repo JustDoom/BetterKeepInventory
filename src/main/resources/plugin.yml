@@ -1,0 +1,22 @@
+name: BetterKeepInventory
+version: '${project.version}'
+main: com.imjustdoom.betterkeepinventory.BetterKeepInventory
+api-version: 1.13
+authors: [ JustDoom ]
+website: https://imjustdoom.com
+commands:
+  betterkeepinventory:
+    aliases: "bki"
+    permission: betterkeepinventory.commands
+permissions:
+  betterkeepinventory.commands:
+    default: op
+    description: Command for plugin
+    children:
+      betterkeepinventory.reload: true
+  betterkeepinventory.keep:
+    default: false
+    description: Keep inventory on death
+  betterkeepinventory.reload:
+    default: op
+    description: Reload plugin
