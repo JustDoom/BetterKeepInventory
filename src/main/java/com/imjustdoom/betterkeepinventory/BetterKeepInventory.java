@@ -3,6 +3,7 @@ package com.imjustdoom.betterkeepinventory;
 import com.imjustdoom.betterkeepinventory.command.BetterKeepInventoryCmd;
 import com.imjustdoom.betterkeepinventory.config.Config;
 import com.imjustdoom.betterkeepinventory.listener.PlayerDeathListener;
+import com.imjustdoom.betterkeepinventory.listener.ReloadListener;
 import com.imjustdoom.cmdinstruction.CMDInstruction;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -27,6 +28,9 @@ public final class BetterKeepInventory extends JavaPlugin {
         CMDInstruction.registerCommands(this, new BetterKeepInventoryCmd().setName("betterkeepinventory").setPermission("betterkeepinventory.commands"));
 
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+
+        if (Bukkit.getPluginManager().getPlugin("BetterReload") != null)
+            Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
     }
 
     @Override

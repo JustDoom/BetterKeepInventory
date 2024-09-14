@@ -1,9 +1,11 @@
 name: BetterKeepInventory
 version: '${project.version}'
 main: com.imjustdoom.betterkeepinventory.BetterKeepInventory
-api-version: 1.13
+api-version: '1.21'
 authors: [ JustDoom ]
 website: https://imjustdoom.com
+softdepend:
+  - BetterReload
 commands:
   betterkeepinventory:
     aliases: "bki"

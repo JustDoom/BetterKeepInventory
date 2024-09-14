@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.21.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -80,6 +80,12 @@
             <artifactId>CMDInstruction</artifactId>
             <version>a04573b862</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.amnoah.betterreload</groupId>
+            <artifactId>api</artifactId>
+            <version>v1.0.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
