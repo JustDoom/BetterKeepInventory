@@ -1,6 +1,8 @@
 package com.imjustdoom.betterkeepinventory.listener;
 
 import com.imjustdoom.betterkeepinventory.config.Config;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,15 +12,15 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void deathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
-
-        if (Config.PERMISSION && !player.hasPermission("betterkeepinventory.keep")) {
-            return;
-        }
-        if (Config.SPECIFIC_WORLDS && !Config.WORLDS.contains(player.getWorld().getName())) {
+        Config.Options worldOptions = Config.WORLDS.getOrDefault(player.getWorld().getName(), Config.GLOBAL_OPTIONS);
+        if (worldOptions.requirePermission && !player.hasPermission("betterkeepinventory.keep")) {
             return;
         }
 
-        if (player.getKiller() == null) {
+        Entity killer = player.getLastDamageCause().getDamageSource().getCausingEntity();
+        if ((worldOptions.keepOnNaturalDeath && killer == null)
+                || (worldOptions.keepOnMobDeath && killer instanceof Mob)
+                || (worldOptions.keepOnPlayerDeath && killer instanceof Player)) {
             event.setKeepInventory(true);
             event.getDrops().clear();
             event.setKeepLevel(true);

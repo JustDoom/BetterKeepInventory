@@ -1,14 +1,31 @@
-# The list of worlds this feature is enabled in
-enabled-worlds:
-  - world
-  - world_nether
-  - world_the_end
+# NOTE: DO NOT HAVE THE KEEP INVENTORY GAMERULE ENABLED WITH THIS PLUGIN
 
-# Should the keep inventory effect only work in specific worlds or all worlds?
-# true = specific worlds in the enabled-worlds list
-# false = all worlds
-only-in-specific-worlds: false
+# Global default settings that affect all worlds. Set all of them to false for vanilla functionality (No keep inventory)
 
-# Should the plugin require the player to have the permission to keep their inventory?
-# If false everyone will keep inventory
-permission: true
+# Should the permission "betterkeepinventory.keep" be required for a player to keep their inventory
+# If false everyone will keep their inventory
+require-permission: false
+# Should the player keep their inventory when killed by another player
+keep-on-player-death: false
+# Should the player keep their inventory on a natural death. Fall damage, starving, drowning etc
+keep-on-natural-death: true
+# Should the player keep their inventory when killed by a mob
+keep-on-mob-death: true
+
+# World specific settings. These will override the above global settings for the specified world
+worlds:
+  # The name of the world
+  world:
+    # Should these settings override the global ones. Set to false to disable the override
+    enabled: false
+    require-permission: false
+    keep-on-killed-by-player: false
+    keep-on-natural-death: true
+    keep-on-mob-death: true
+  world_nether:
+    enabled: false
+    require-permission: true
+    keep-on-killed-by-player: false
+    # The "keep-on-natural-death" and "keep-on-mob-death" options have been left out. These two will default to the global
+    # defaults set at the top of the file while the other settings that are specified will have whatever option is set
+    # above inside the world section
