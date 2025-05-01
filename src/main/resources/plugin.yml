@@ -15,6 +15,3 @@ permissions:
   betterkeepinventory.keep:
     default: false
     description: Keep inventory on death
-  betterkeepinventory.reload:
-    default: op
-    description: Reload plugin
