@@ -10,6 +10,8 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -60,5 +62,8 @@ public final class BetterKeepInventory extends JavaPlugin {
         } else {
             getLogger().info("BetterReload was not found so support for it will not be enabled");
         }
+
+        Metrics metrics = new Metrics(this, 25697);
+        metrics.addCustomChart(new SingleLineChart("overridden_worlds", () -> Config.WORLDS.size()));
     }
 }
