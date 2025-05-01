@@ -10,12 +10,14 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
 public final class BetterKeepInventory extends JavaPlugin {
     private static BetterKeepInventory INSTANCE;
+    public static String PREFIX = "[BKI]";
     public static TextColor TEXT_COLOR = TextColor.color(96, 179, 255);
 
     public static BetterKeepInventory get() {
@@ -29,7 +31,7 @@ public final class BetterKeepInventory extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("Loading config...");
-        Config.init();
+        Config.init(null);
         getLogger().info("Loaded config");
 
         getLogger().info("Registering commands and events...");
@@ -37,11 +39,11 @@ public final class BetterKeepInventory extends JavaPlugin {
             LiteralCommandNode<CommandSourceStack> buildCommand = Commands.literal("betterkeepinventory")
                     .requires(sender -> sender.getSender().hasPermission("betterkeepinventory.commands"))
                     .executes(ctx -> {
-                        ctx.getSource().getSender().sendMessage(Component.text("BetterKeepInventory version " + getPluginMeta().getVersion(), TEXT_COLOR));
+                        ctx.getSource().getSender().sendMessage(Component.text(PREFIX + " BetterKeepInventory version " + getPluginMeta().getVersion(), TEXT_COLOR));
                         return Command.SINGLE_SUCCESS;
                     }).then(Commands.literal("reload").executes(ctx -> {
-                        Config.init();
-                        ctx.getSource().getSender().sendMessage(Component.text("BetterKeepInventory has been reloaded!", TEXT_COLOR));
+                        Config.init(ctx.getSource().getSender() instanceof Player player ? player : null);
+                        ctx.getSource().getSender().sendMessage(Component.text(PREFIX + " BetterKeepInventory has been reloaded!", TEXT_COLOR));
                         return Command.SINGLE_SUCCESS;
                     }))
                     .build();

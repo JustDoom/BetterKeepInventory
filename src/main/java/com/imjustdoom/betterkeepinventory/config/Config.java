@@ -1,9 +1,11 @@
 package com.imjustdoom.betterkeepinventory.config;
 
 import com.imjustdoom.betterkeepinventory.BetterKeepInventory;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +21,7 @@ public class Config {
     public static Options GLOBAL_OPTIONS;
     public static Map<String, Options> WORLDS = new HashMap<>();
 
-    public static void init() {
+    public static void init(Player player) {
         BetterKeepInventory.get().saveDefaultConfig();
         BetterKeepInventory.get().reloadConfig();
         FileConfiguration config = BetterKeepInventory.get().getConfig();
@@ -37,12 +39,20 @@ public class Config {
         for (String worldName : config.getConfigurationSection("worlds").getKeys(false)) {
             World world = BetterKeepInventory.get().getServer().getWorld(worldName);
             if (world == null) {
-                BetterKeepInventory.get().getLogger().warning("The world '" + worldName + "' was unable to be found. Please make sure you spelt it correctly.");
+                String message = "The world '" + worldName + "' was unable to be found. Please make sure you spelt it correctly.";
+                BetterKeepInventory.get().getLogger().warning(message);
+                if (player != null) {
+                    player.sendMessage(Component.text(BetterKeepInventory.PREFIX + " " + message, BetterKeepInventory.TEXT_COLOR));
+                }
                 continue;
             }
 
             if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.KEEP_INVENTORY))) {
-                BetterKeepInventory.get().getLogger().warning("The world '" + worldName + "' has the 'Keep Inventory' gamerule enabled. This will mess with the functionality of the plugin in that world so we have skipped it. Please disable the gamerule and reload the plugin with '/bki reload' or restart the server");
+                String message = "The world '" + worldName + "' has the 'Keep Inventory' gamerule enabled. This will mess with the functionality of the plugin in that world so we have skipped it. Please disable the gamerule and reload the plugin with '/bki reload' or restart the server";
+                BetterKeepInventory.get().getLogger().warning(message);
+                if (player != null) {
+                    player.sendMessage(Component.text(BetterKeepInventory.PREFIX + " " + message, BetterKeepInventory.TEXT_COLOR));
+                }
                 continue;
             }
 

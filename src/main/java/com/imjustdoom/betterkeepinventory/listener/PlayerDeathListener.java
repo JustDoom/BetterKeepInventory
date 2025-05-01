@@ -21,7 +21,7 @@ public class PlayerDeathListener implements Listener {
         if ((worldOptions.keepOnNaturalDeath && killer == null)
                 || (worldOptions.keepOnMobDeath && killer instanceof Mob)
                 || (worldOptions.keepOnPlayerDeath && killer instanceof Player)) {
-            event.setKeepInventory(true);
+            event.setKeepInventory(true); // TODO: Maybe allow specifying what to save. So you could have players keep experience but not inventory
             event.getDrops().clear();
             event.setKeepLevel(true);
             event.setDroppedExp(0);
