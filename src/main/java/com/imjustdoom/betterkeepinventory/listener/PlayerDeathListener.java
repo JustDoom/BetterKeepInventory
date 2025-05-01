@@ -7,11 +7,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class PlayerDeathListener implements Listener {
-
     @EventHandler
     public void deathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Player killer = player.getKiller();
 
         if (Config.PERMISSION && !player.hasPermission("betterkeepinventory.keep")) {
             return;
@@ -20,7 +18,7 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        if (killer == null) {
+        if (player.getKiller() == null) {
             event.setKeepInventory(true);
             event.getDrops().clear();
             event.setKeepLevel(true);

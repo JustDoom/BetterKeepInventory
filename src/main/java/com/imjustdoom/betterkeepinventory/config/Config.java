@@ -17,7 +17,7 @@ public class Config {
         FileConfiguration config = BetterKeepInventory.get().getConfig();
 
         WORLDS = config.getStringList("enabled-worlds");
-        SPECIFIC_WORLDS = config.getBoolean("only-in-specific-worlds");
-        PERMISSION = config.getBoolean("permission");
+        SPECIFIC_WORLDS = config.getBoolean("only-in-specific-worlds", false);
+        PERMISSION = config.getBoolean("permission", true);
     }
 }

@@ -1,17 +1,22 @@
 package com.imjustdoom.betterkeepinventory;
 
-import com.imjustdoom.betterkeepinventory.command.BetterKeepInventoryCmd;
 import com.imjustdoom.betterkeepinventory.config.Config;
 import com.imjustdoom.betterkeepinventory.listener.PlayerDeathListener;
 import com.imjustdoom.betterkeepinventory.listener.ReloadListener;
-import com.imjustdoom.cmdinstruction.CMDInstruction;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class BetterKeepInventory extends JavaPlugin {
+import java.util.List;
 
+public final class BetterKeepInventory extends JavaPlugin {
     private static BetterKeepInventory INSTANCE;
+    public static TextColor TEXT_COLOR = TextColor.color(96, 179, 255);
 
     public static BetterKeepInventory get() {
         return INSTANCE;
@@ -23,18 +28,35 @@ public final class BetterKeepInventory extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getLogger().info("Loading config...");
         Config.init();
+        getLogger().info("Loaded config");
 
-        CMDInstruction.registerCommands(this, new BetterKeepInventoryCmd().setName("betterkeepinventory").setPermission("betterkeepinventory.commands"));
+        getLogger().info("Registering commands and events...");
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            LiteralCommandNode<CommandSourceStack> buildCommand = Commands.literal("betterkeepinventory")
+                    .requires(sender -> sender.getSender().hasPermission("betterkeepinventory.commands"))
+                    .executes(ctx -> {
+                        ctx.getSource().getSender().sendMessage(Component.text("BetterKeepInventory version " + getPluginMeta().getVersion(), TEXT_COLOR));
+                        return Command.SINGLE_SUCCESS;
+                    }).then(Commands.literal("reload").executes(ctx -> {
+                        Config.init();
+                        ctx.getSource().getSender().sendMessage(Component.text("BetterKeepInventory has been reloaded!", TEXT_COLOR));
+                        return Command.SINGLE_SUCCESS;
+                    }))
+                    .build();
+            commands.registrar().register(buildCommand, List.of("bki"));
+        });
+        getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getLogger().info("Registered commands and events");
 
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
-
-        if (Bukkit.getPluginManager().getPlugin("BetterReload") != null)
-            Bukkit.getPluginManager().registerEvents(new ReloadListener(), this);
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+        getLogger().info("Checking for BetterReload...");
+        if (getServer().getPluginManager().getPlugin("BetterReload") != null) {
+            getLogger().info("BetterReload found, registering event...");
+            getServer().getPluginManager().registerEvents(new ReloadListener(), this);
+            getLogger().info("BetterReload event registered");
+        } else {
+            getLogger().info("BetterReload was not found so support for it will not be enabled");
+        }
     }
 }
