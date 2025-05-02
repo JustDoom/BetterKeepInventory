@@ -28,6 +28,7 @@ public class BetterKeepInventorySponge {
     @Inject private PluginContainer container;
 
     private final Configuration pluginConfig;
+    private boolean disabled;
 
     public BetterKeepInventorySponge() {
         this.pluginConfig = new SpongeConfig();
@@ -40,7 +41,7 @@ public class BetterKeepInventorySponge {
         // Reload command
         Command.Parameterized reloadCommand = Command.builder()
                 .executor(context -> {
-                    getPluginConfig().init(context.cause() instanceof Player player ? new SpongePlayer(player) : null);
+                    getPluginConfig().init(context.cause().root() instanceof Player player ? new SpongePlayer(player) : null);
                     context.sendMessage(Component.text(PREFIX + " BetterKeepInventory has been reloaded!", TEXT_COLOR));
                     return CommandResult.success();
                 })
@@ -74,7 +75,7 @@ public class BetterKeepInventorySponge {
     // TODO: Double check this gets auto unloaded when needed since it auto loads in this @Plugin class
     @Listener
     public void onPlayerDeath(DestructEntityEvent.Death event) {
-        if (!(event.entity() instanceof ServerPlayer player)) {
+        if (!(event.entity() instanceof ServerPlayer player) || isDisabled()) {
             return;
         }
 
@@ -104,6 +105,14 @@ public class BetterKeepInventorySponge {
 
     public Configuration getPluginConfig() {
         return this.pluginConfig;
+    }
+
+    public boolean isDisabled() {
+        return this.disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 
     private static BetterKeepInventorySponge INSTANCE;

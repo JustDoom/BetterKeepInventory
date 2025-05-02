@@ -24,11 +24,11 @@ public class SpongeConfig extends Configuration {
         try {
             root = LOADER.load();
         } catch (IOException e) {
-            System.err.println("An error occurred while loading this configuration: " + e.getMessage());
+            BetterKeepInventorySponge.get().getLogger().error("An error occurred while loading this configuration: " + e.getMessage());
             if (e.getCause() != null) {
                 e.getCause().printStackTrace();
             }
-            System.exit(1);// TODO: Disable plugin instead?
+            BetterKeepInventorySponge.get().setDisabled(true);
             return;
         }
         boolean wasEmpty = root.empty();
