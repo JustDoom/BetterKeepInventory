@@ -25,6 +25,13 @@ Whether your items are kept or dropped for whatever reason is up to you!
 
 Just install the plugin to your plugins folder for your platform (Paper or Sponge)
 
+A player death is classified as a player other than yourself causing your death, whether it be from a sword, arrow, or hitting off a cliff.
+As long as Minecraft classifies it as being killed by another player it is labelled a player death in the plugin.
+
+A natural death is when you die from starvation, fall damage, drowning, or from the void. It should cover death from the `/kill` command too.
+
+A mob death is when you are killed by a hostile mob, creeper, skeleton, spider etc.
+
 ### Commands
 
 There is one command `/betterkeepinventory reload` which reloads the config file and applies the changes made.
