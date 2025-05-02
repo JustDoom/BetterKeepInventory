@@ -9,8 +9,7 @@ plugins {
 }
 
 dependencies {
-    implementation("org.bstats:bstats-sponge:3.1.0")
-    implementation(project(":common")) // Depend on common module
+    implementation(project(":common"))
 }
 
 java {
@@ -48,12 +47,10 @@ sponge {
 tasks {
     shadowJar {
         dependencies {
-            include(dependency("org.bstats:bstats-sponge:3.1.0"))
             include(project(":common"))
         }
-        relocate("org.bstats", "com.imjustdoom.betterkeepinventory.bstats")
-        relocate("com.imjustdoom.betterkeepinventory.common", "com.imjustdoom.betterkeepinventory.sponge.api")
-        archiveClassifier.set("sponge")
+        relocate("com.imjustdoom.betterkeepinventory.common", "com.imjustdoom.betterkeepinventory.common")
+        archiveFileName.set("${rootProject.name}-sponge-${project.version}.jar")
     }
 
     build {

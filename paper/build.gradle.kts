@@ -21,12 +21,11 @@ tasks {
     shadowJar {
         dependencies {
             include(dependency("org.bstats:bstats-bukkit:3.1.0"))
-            include(dependency("org.bstats:bstats-base:3.1.0"))
             include(project(":common"))
         }
         relocate("org.bstats", "com.imjustdoom.betterkeepinventory.paper.bstats")
-        relocate("com.imjustdoom.betterkeepinventory.common", "com.imjustdoom.betterkeepinventory.paper.api")
-        archiveClassifier.set("paper")
+        relocate("com.imjustdoom.betterkeepinventory.common", "com.imjustdoom.betterkeepinventory.common")
+        archiveFileName.set("${rootProject.name}-paper-${project.version}.jar")
     }
 
     runServer {
