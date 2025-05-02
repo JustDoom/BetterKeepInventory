@@ -1,6 +1,7 @@
 package com.imjustdoom.betterkeepinventory.paper.listener;
 
-import com.imjustdoom.betterkeepinventory.paper.Config;
+import com.imjustdoom.betterkeepinventory.paper.BetterKeepInventoryPaper;
+import com.imjustdoom.betterkeepinventory.paper.PaperConfig;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -12,7 +13,7 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void deathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Config.Options worldOptions = Config.WORLDS.getOrDefault(player.getWorld().getName(), Config.GLOBAL_OPTIONS);
+        PaperConfig.Options worldOptions = BetterKeepInventoryPaper.get().getPluginConfig().worlds.getOrDefault(player.getWorld().getName(), BetterKeepInventoryPaper.get().getPluginConfig().globalOptions);
         if (worldOptions.requirePermission && !player.hasPermission("betterkeepinventory.keep")) {
             return;
         }

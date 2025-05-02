@@ -1,5 +1,6 @@
 package com.imjustdoom.betterkeepinventory.paper;
 
+import com.imjustdoom.betterkeepinventory.common.Configuration;
 import com.imjustdoom.betterkeepinventory.paper.listener.PlayerDeathListener;
 import com.imjustdoom.betterkeepinventory.paper.listener.ReloadListener;
 import com.mojang.brigadier.Command;
@@ -17,22 +18,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 
 public final class BetterKeepInventoryPaper extends JavaPlugin {
-    private static BetterKeepInventoryPaper INSTANCE;
     public static String PREFIX = "[BKI]";
     public static TextColor TEXT_COLOR = TextColor.color(96, 179, 255);
 
-    public static BetterKeepInventoryPaper get() {
-        return INSTANCE;
-    }
+    private final Configuration pluginConfig;
 
     public BetterKeepInventoryPaper() {
+        this.pluginConfig = new PaperConfig();
         INSTANCE = this;
     }
 
     @Override
     public void onEnable() {
         getLogger().info("Loading config...");
-        Config.init(null);
+        getPluginConfig().init(null);
         getLogger().info("Loaded config");
 
         getLogger().info("Registering commands and events...");
@@ -43,7 +42,7 @@ public final class BetterKeepInventoryPaper extends JavaPlugin {
                         ctx.getSource().getSender().sendMessage(Component.text(PREFIX + " BetterKeepInventory version " + getPluginMeta().getVersion(), TEXT_COLOR));
                         return Command.SINGLE_SUCCESS;
                     }).then(Commands.literal("reload").executes(ctx -> {
-                        Config.init(ctx.getSource().getSender() instanceof Player player ? player : null);
+                        getPluginConfig().init(ctx.getSource().getSender() instanceof Player player ? new PaperPlayer(player) : null);
                         ctx.getSource().getSender().sendMessage(Component.text(PREFIX + " BetterKeepInventory has been reloaded!", TEXT_COLOR));
                         return Command.SINGLE_SUCCESS;
                     }))
@@ -63,6 +62,15 @@ public final class BetterKeepInventoryPaper extends JavaPlugin {
         }
 
         Metrics metrics = new Metrics(this, 25697);
-        metrics.addCustomChart(new SingleLineChart("overridden_worlds", () -> Config.WORLDS.size()));
+        metrics.addCustomChart(new SingleLineChart("overridden_worlds", () -> getPluginConfig().worlds.size()));
+    }
+
+    public Configuration getPluginConfig() {
+        return this.pluginConfig;
+    }
+
+    private static BetterKeepInventoryPaper INSTANCE;
+    public static BetterKeepInventoryPaper get() {
+        return INSTANCE;
     }
 }

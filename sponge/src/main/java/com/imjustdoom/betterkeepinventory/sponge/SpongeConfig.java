@@ -1,5 +1,7 @@
 package com.imjustdoom.betterkeepinventory.sponge;
 
+import com.imjustdoom.betterkeepinventory.common.BetterPlayer;
+import com.imjustdoom.betterkeepinventory.common.Configuration;
 import net.kyori.adventure.text.Component;
 import org.spongepowered.api.ResourceKey;
 import org.spongepowered.api.Sponge;
@@ -11,23 +13,13 @@ import org.spongepowered.configurate.gson.GsonConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Config {
+public class SpongeConfig extends Configuration {
     private static GsonConfigurationLoader LOADER = GsonConfigurationLoader.builder().path(Path.of("config/betterkeepinventory/config.json")).build();
-    public static class Options {
-        public boolean requirePermission = false;
-        public boolean keepOnPlayerDeath = false;
-        public boolean keepOnNaturalDeath = true;
-        public boolean keepOnMobDeath = true;
-    }
 
-    public static Options GLOBAL_OPTIONS;
-    public static Map<String, Options> WORLDS = new HashMap<>();
-
-    public static void init(Player player) {
+    public void init(BetterPlayer<?> player) {
         BasicConfigurationNode root;
         try {
             root = LOADER.load();
@@ -36,19 +28,19 @@ public class Config {
             if (e.getCause() != null) {
                 e.getCause().printStackTrace();
             }
-            System.exit(1);// TODO: Disable plugin instead
+            System.exit(1);// TODO: Disable plugin instead?
             return;
         }
         boolean wasEmpty = root.empty();
 
-        GLOBAL_OPTIONS = new Options();
-        WORLDS.clear();
+        globalOptions = new Options();
+        worlds.clear();
 
         // Get default global options
-        GLOBAL_OPTIONS.requirePermission = root.node("require-permission").getBoolean(GLOBAL_OPTIONS.requirePermission);
-        GLOBAL_OPTIONS.keepOnPlayerDeath = root.node("keep-on-player-death").getBoolean(GLOBAL_OPTIONS.keepOnPlayerDeath);
-        GLOBAL_OPTIONS.keepOnNaturalDeath = root.node("keep-on-natural-death").getBoolean(GLOBAL_OPTIONS.keepOnNaturalDeath);
-        GLOBAL_OPTIONS.keepOnMobDeath = root.node("keep-on-mob-death").getBoolean(GLOBAL_OPTIONS.keepOnMobDeath);
+        globalOptions.requirePermission = root.node("require-permission").getBoolean(globalOptions.requirePermission);
+        globalOptions.keepOnPlayerDeath = root.node("keep-on-player-death").getBoolean(globalOptions.keepOnPlayerDeath);
+        globalOptions.keepOnNaturalDeath = root.node("keep-on-natural-death").getBoolean(globalOptions.keepOnNaturalDeath);
+        globalOptions.keepOnMobDeath = root.node("keep-on-mob-death").getBoolean(globalOptions.keepOnMobDeath);
 
         // Create initial world examples on first generate
         if (wasEmpty) {
@@ -71,7 +63,7 @@ public class Config {
                 String message = "The world '" + worldName + "' was unable to be found. Please make sure you spelt it correctly.";
                 BetterKeepInventorySponge.get().getLogger().warn(message);
                 if (player != null) {
-                    player.sendMessage(Component.text(BetterKeepInventorySponge.PREFIX + " " + message, BetterKeepInventorySponge.TEXT_COLOR));
+                    ((Player) player.player()).sendMessage(Component.text(BetterKeepInventorySponge.PREFIX + " " + message, BetterKeepInventorySponge.TEXT_COLOR));
                 }
                 continue;
             }
@@ -84,17 +76,17 @@ public class Config {
                 String message = "The world '" + worldName + "' has the 'Keep Inventory' gamerule enabled. This will mess with the functionality of the plugin in that world so we have skipped it. Please disable the gamerule and reload the plugin with '/bki reload' or restart the server";
                 BetterKeepInventorySponge.get().getLogger().warn(message);
                 if (player != null) {
-                    player.sendMessage(Component.text(BetterKeepInventorySponge.PREFIX + " " + message, BetterKeepInventorySponge.TEXT_COLOR));
+                    ((Player) player.player()).sendMessage(Component.text(BetterKeepInventorySponge.PREFIX + " " + message, BetterKeepInventorySponge.TEXT_COLOR));
                 }
                 continue;
             }
 
             Options worldOptions = new Options();
-            worldOptions.requirePermission = root.node("worlds", worldName, "require-permission").getBoolean(GLOBAL_OPTIONS.requirePermission);
-            worldOptions.keepOnPlayerDeath = root.node("worlds", worldName, "keep-on-player-death").getBoolean(GLOBAL_OPTIONS.keepOnPlayerDeath);
-            worldOptions.keepOnNaturalDeath = root.node("worlds", worldName, "keep-on-natural-death").getBoolean(GLOBAL_OPTIONS.keepOnNaturalDeath);
-            worldOptions.keepOnMobDeath = root.node("worlds", worldName, "keep-on-mob-death").getBoolean(GLOBAL_OPTIONS.keepOnMobDeath);
-            WORLDS.put(worldName, worldOptions);
+            worldOptions.requirePermission = root.node("worlds", worldName, "require-permission").getBoolean(globalOptions.requirePermission);
+            worldOptions.keepOnPlayerDeath = root.node("worlds", worldName, "keep-on-player-death").getBoolean(globalOptions.keepOnPlayerDeath);
+            worldOptions.keepOnNaturalDeath = root.node("worlds", worldName, "keep-on-natural-death").getBoolean(globalOptions.keepOnNaturalDeath);
+            worldOptions.keepOnMobDeath = root.node("worlds", worldName, "keep-on-mob-death").getBoolean(globalOptions.keepOnMobDeath);
+            worlds.put(worldName, worldOptions);
         }
 
         try {

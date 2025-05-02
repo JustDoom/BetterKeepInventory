@@ -1,6 +1,7 @@
 package com.imjustdoom.betterkeepinventory.sponge;
 
 import com.google.inject.Inject;
+import com.imjustdoom.betterkeepinventory.common.Configuration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.apache.logging.log4j.Logger;
@@ -20,21 +21,16 @@ import org.spongepowered.plugin.builtin.jvm.Plugin;
 
 @Plugin("betterkeepinventory")
 public class BetterKeepInventorySponge {
-    private static BetterKeepInventorySponge INSTANCE;
     public static String PREFIX = "[BKI]";
     public static TextColor TEXT_COLOR = TextColor.color(96, 179, 255);
 
-    @Inject
-    private Logger logger;
+    @Inject private Logger logger;
+    @Inject private PluginContainer container;
 
-    @Inject
-    private PluginContainer container;
-
-    public static BetterKeepInventorySponge get() {
-        return INSTANCE;
-    }
+    private final Configuration pluginConfig;
 
     public BetterKeepInventorySponge() {
+        this.pluginConfig = new SpongeConfig();
         INSTANCE = this;
     }
 
@@ -44,7 +40,7 @@ public class BetterKeepInventorySponge {
         // Reload command
         Command.Parameterized reloadCommand = Command.builder()
                 .executor(context -> {
-                    Config.init(context.cause() instanceof Player player ? player : null);
+                    getPluginConfig().init(context.cause() instanceof Player player ? new SpongePlayer(player) : null);
                     context.sendMessage(Component.text(PREFIX + " BetterKeepInventory has been reloaded!", TEXT_COLOR));
                     return CommandResult.success();
                 })
@@ -59,7 +55,7 @@ public class BetterKeepInventorySponge {
                             return CommandResult.success();
                         })
                         .permission("betterkeepinventory.commands")
-                        .shortDescription(Component.text("Hello World Command"))
+                        .shortDescription(Component.text("Gets the plugin version"))
                         .addChild(reloadCommand, "reload")
                         .build(),
                 "betterkeepinventory", "bki");
@@ -69,7 +65,7 @@ public class BetterKeepInventorySponge {
     @Listener
     public void onServerStart(final StartedEngineEvent<Server> event) {
         getLogger().info("Loading config...");
-        Config.init(null);
+        getPluginConfig().init(null);
         getLogger().info("Loaded config");
 
         // TODO: Metrics
@@ -82,7 +78,7 @@ public class BetterKeepInventorySponge {
             return;
         }
 
-        Config.Options worldOptions = Config.WORLDS.getOrDefault(player.serverLocation().worldKey().formatted(), Config.GLOBAL_OPTIONS);
+        SpongeConfig.Options worldOptions = getPluginConfig().worlds.getOrDefault(player.serverLocation().worldKey().formatted(), getPluginConfig().globalOptions);
         if (worldOptions.requirePermission && !player.hasPermission("betterkeepinventory.keep")) {
             return;
         }
@@ -104,5 +100,14 @@ public class BetterKeepInventorySponge {
 
     public PluginContainer getContainer() {
         return this.container;
+    }
+
+    public Configuration getPluginConfig() {
+        return this.pluginConfig;
+    }
+
+    private static BetterKeepInventorySponge INSTANCE;
+    public static BetterKeepInventorySponge get() {
+        return INSTANCE;
     }
 }
