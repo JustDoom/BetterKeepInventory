@@ -1,8 +1,7 @@
-package com.imjustdoom.betterkeepinventory;
+package com.imjustdoom.betterkeepinventory.paper;
 
-import com.imjustdoom.betterkeepinventory.config.Config;
-import com.imjustdoom.betterkeepinventory.listener.PlayerDeathListener;
-import com.imjustdoom.betterkeepinventory.listener.ReloadListener;
+import com.imjustdoom.betterkeepinventory.paper.listener.PlayerDeathListener;
+import com.imjustdoom.betterkeepinventory.paper.listener.ReloadListener;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -17,16 +16,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-public final class BetterKeepInventory extends JavaPlugin {
-    private static BetterKeepInventory INSTANCE;
+public final class BetterKeepInventoryPaper extends JavaPlugin {
+    private static BetterKeepInventoryPaper INSTANCE;
     public static String PREFIX = "[BKI]";
     public static TextColor TEXT_COLOR = TextColor.color(96, 179, 255);
 
-    public static BetterKeepInventory get() {
+    public static BetterKeepInventoryPaper get() {
         return INSTANCE;
     }
 
-    public BetterKeepInventory() {
+    public BetterKeepInventoryPaper() {
         INSTANCE = this;
     }
 

@@ -1,6 +1,6 @@
-package com.imjustdoom.betterkeepinventory.listener;
+package com.imjustdoom.betterkeepinventory.paper.listener;
 
-import com.imjustdoom.betterkeepinventory.config.Config;
+import com.imjustdoom.betterkeepinventory.paper.Config;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;

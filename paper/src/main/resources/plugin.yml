@@ -1,6 +1,6 @@
 name: ${name}
 version: ${version}
-main: ${group}.${name}
+main: ${group}.paper.${name}Paper
 api-version: 1.21
 authors: [ JustDoom ]
 website: https://imjustdoom.com

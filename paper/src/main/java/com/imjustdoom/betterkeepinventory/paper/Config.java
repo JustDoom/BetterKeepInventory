@@ -1,6 +1,5 @@
-package com.imjustdoom.betterkeepinventory.config;
+package com.imjustdoom.betterkeepinventory.paper;
 
-import com.imjustdoom.betterkeepinventory.BetterKeepInventory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -22,9 +21,9 @@ public class Config {
     public static Map<String, Options> WORLDS = new HashMap<>();
 
     public static void init(Player player) {
-        BetterKeepInventory.get().saveDefaultConfig();
-        BetterKeepInventory.get().reloadConfig();
-        FileConfiguration config = BetterKeepInventory.get().getConfig();
+        BetterKeepInventoryPaper.get().saveDefaultConfig();
+        BetterKeepInventoryPaper.get().reloadConfig();
+        FileConfiguration config = BetterKeepInventoryPaper.get().getConfig();
 
         GLOBAL_OPTIONS = new Options();
         WORLDS.clear();
@@ -37,21 +36,12 @@ public class Config {
 
         // Get world specific options
         for (String worldName : config.getConfigurationSection("worlds").getKeys(false)) {
-            World world = BetterKeepInventory.get().getServer().getWorld(worldName);
+            World world = BetterKeepInventoryPaper.get().getServer().getWorld(worldName);
             if (world == null) {
                 String message = "The world '" + worldName + "' was unable to be found. Please make sure you spelt it correctly.";
-                BetterKeepInventory.get().getLogger().warning(message);
+                BetterKeepInventoryPaper.get().getLogger().warning(message);
                 if (player != null) {
-                    player.sendMessage(Component.text(BetterKeepInventory.PREFIX + " " + message, BetterKeepInventory.TEXT_COLOR));
-                }
-                continue;
-            }
-
-            if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.KEEP_INVENTORY))) {
-                String message = "The world '" + worldName + "' has the 'Keep Inventory' gamerule enabled. This will mess with the functionality of the plugin in that world so we have skipped it. Please disable the gamerule and reload the plugin with '/bki reload' or restart the server";
-                BetterKeepInventory.get().getLogger().warning(message);
-                if (player != null) {
-                    player.sendMessage(Component.text(BetterKeepInventory.PREFIX + " " + message, BetterKeepInventory.TEXT_COLOR));
+                    player.sendMessage(Component.text(BetterKeepInventoryPaper.PREFIX + " " + message, BetterKeepInventoryPaper.TEXT_COLOR));
                 }
                 continue;
             }
@@ -59,6 +49,16 @@ public class Config {
             if (!config.getBoolean("worlds." + worldName + ".enabled", false)) {
                 continue;
             }
+
+            if (Boolean.TRUE.equals(world.getGameRuleValue(GameRule.KEEP_INVENTORY))) {
+                String message = "The world '" + worldName + "' has the 'Keep Inventory' gamerule enabled. This will mess with the functionality of the plugin in that world so we have skipped it. Please disable the gamerule and reload the plugin with '/bki reload' or restart the server";
+                BetterKeepInventoryPaper.get().getLogger().warning(message);
+                if (player != null) {
+                    player.sendMessage(Component.text(BetterKeepInventoryPaper.PREFIX + " " + message, BetterKeepInventoryPaper.TEXT_COLOR));
+                }
+                continue;
+            }
+
             Options worldOptions = new Options();
             worldOptions.requirePermission = config.getBoolean("worlds." + worldName + ".require-permission", GLOBAL_OPTIONS.requirePermission);
             worldOptions.keepOnPlayerDeath = config.getBoolean("worlds." + worldName + ".keep-on-player-death", GLOBAL_OPTIONS.keepOnPlayerDeath);
