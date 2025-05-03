@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Configuration {
-    public static class Options {
+    public static class Options { // TODO: A way to have options for people with permissions and those without
         public boolean requirePermission = false;
         public boolean keepOnPlayerDeath = false;
         public boolean keepOnNaturalDeath = true;
