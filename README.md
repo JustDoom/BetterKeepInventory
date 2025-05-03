@@ -20,6 +20,8 @@ Whether your items are kept or dropped for whatever reason is up to you!
 ### Planned
 
 - Configurable message on keep inventory
+- Drop/keep only certain items
+- Limited keep inventory uses per specified time/lifetime
 
 ## Usage
 
