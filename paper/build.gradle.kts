@@ -21,6 +21,7 @@ tasks {
     shadowJar {
         dependencies {
             include(dependency("org.bstats:bstats-bukkit:3.1.0"))
+            include(dependency("org.bstats:bstats-base:3.1.0"))
             include(project(":common"))
         }
         relocate("org.bstats", "com.imjustdoom.betterkeepinventory.paper.bstats")
