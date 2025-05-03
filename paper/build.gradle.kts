@@ -40,8 +40,8 @@ tasks {
 
     processResources {
         val pluginName = rootProject.name
-        val pluginVersion = project.version.toString()
-        val pluginGroup = project.group.toString()
+        val pluginVersion = project.version
+        val pluginGroup = project.group
 
         filesMatching("**/plugin.yml") {
             expand(

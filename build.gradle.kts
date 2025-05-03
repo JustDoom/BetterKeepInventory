@@ -8,7 +8,7 @@ plugins {
 
 allprojects {
     group = "com.imjustdoom.betterkeepinventory"
-    version = "2.0.1"
+    version = rootProject.version
     description = "BetterKeepInventory"
 
     repositories {
