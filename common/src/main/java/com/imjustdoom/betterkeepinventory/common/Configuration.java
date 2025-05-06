@@ -9,6 +9,7 @@ public abstract class Configuration {
         public boolean keepOnPlayerDeath = false;
         public boolean keepOnNaturalDeath = true;
         public boolean keepOnMobDeath = true;
+        public boolean keepOnSuicide = false;
     }
 
     public Options globalOptions;

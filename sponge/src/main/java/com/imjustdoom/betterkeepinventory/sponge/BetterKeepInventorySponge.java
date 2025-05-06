@@ -90,7 +90,8 @@ public class BetterKeepInventorySponge {
         }
         if ((worldOptions.keepOnNaturalDeath && killer == null)
                 || (worldOptions.keepOnMobDeath && killer instanceof Hostile)
-                || (worldOptions.keepOnPlayerDeath && killer instanceof Player)) {
+                || (worldOptions.keepOnPlayerDeath && killer instanceof Player && killer != player)
+                || (worldOptions.keepOnSuicide && killer == player)) {
             event.setKeepInventory(true);
         }
     }

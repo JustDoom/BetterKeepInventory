@@ -21,7 +21,8 @@ public class PlayerDeathListener implements Listener {
         Entity killer = player.getLastDamageCause().getDamageSource().getCausingEntity();
         if ((worldOptions.keepOnNaturalDeath && killer == null)
                 || (worldOptions.keepOnMobDeath && killer instanceof Mob)
-                || (worldOptions.keepOnPlayerDeath && killer instanceof Player)) {
+                || (worldOptions.keepOnPlayerDeath && killer instanceof Player && player != killer)
+                || (worldOptions.keepOnSuicide && killer == player)) {
             event.setKeepInventory(true);
             event.getDrops().clear();
             event.setKeepLevel(true);

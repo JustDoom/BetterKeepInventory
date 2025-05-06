@@ -41,6 +41,7 @@ public class SpongeConfig extends Configuration {
         globalOptions.keepOnPlayerDeath = root.node("keep-on-player-death").getBoolean(globalOptions.keepOnPlayerDeath);
         globalOptions.keepOnNaturalDeath = root.node("keep-on-natural-death").getBoolean(globalOptions.keepOnNaturalDeath);
         globalOptions.keepOnMobDeath = root.node("keep-on-mob-death").getBoolean(globalOptions.keepOnMobDeath);
+        globalOptions.keepOnSuicide = root.node("keep-on-suicide").getBoolean(globalOptions.keepOnSuicide);
 
         // Create initial world examples on first generate
         if (wasEmpty) {
@@ -49,6 +50,7 @@ public class SpongeConfig extends Configuration {
             root.node("worlds", "minecraft:overworld", "keep-on-player-death").getBoolean(false);
             root.node("worlds", "minecraft:overworld", "keep-on-natural-death").getBoolean(true);
             root.node("worlds", "minecraft:overworld", "keep-on-mob-death").getBoolean(true);
+            root.node("worlds", "minecraft:overworld", "keep-on-suicide").getBoolean(false);
 
             root.node("worlds", "minecraft:the_nether", "enabled").getBoolean(false);
             root.node("worlds", "minecraft:the_nether", "require-permission").getBoolean(true);
@@ -86,6 +88,7 @@ public class SpongeConfig extends Configuration {
             worldOptions.keepOnPlayerDeath = root.node("worlds", worldName, "keep-on-player-death").getBoolean(globalOptions.keepOnPlayerDeath);
             worldOptions.keepOnNaturalDeath = root.node("worlds", worldName, "keep-on-natural-death").getBoolean(globalOptions.keepOnNaturalDeath);
             worldOptions.keepOnMobDeath = root.node("worlds", worldName, "keep-on-mob-death").getBoolean(globalOptions.keepOnMobDeath);
+            worldOptions.keepOnSuicide = root.node("worlds", worldName, "keep-on-suicide").getBoolean(globalOptions.keepOnSuicide);
             worlds.put(worldName, worldOptions);
         }
 

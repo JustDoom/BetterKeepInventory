@@ -23,6 +23,7 @@ public class PaperConfig extends Configuration {
         globalOptions.keepOnPlayerDeath = config.getBoolean("keep-on-player-death", globalOptions.keepOnPlayerDeath);
         globalOptions.keepOnNaturalDeath = config.getBoolean("keep-on-natural-death", globalOptions.keepOnNaturalDeath);
         globalOptions.keepOnMobDeath = config.getBoolean("keep-on-mob-death", globalOptions.keepOnMobDeath);
+        globalOptions.keepOnSuicide = config.getBoolean("keep-on-suicide", globalOptions.keepOnSuicide);
 
         // Get world specific options
         for (String worldName : config.getConfigurationSection("worlds").getKeys(false)) {
@@ -54,6 +55,7 @@ public class PaperConfig extends Configuration {
             worldOptions.keepOnPlayerDeath = config.getBoolean("worlds." + worldName + ".keep-on-player-death", globalOptions.keepOnPlayerDeath);
             worldOptions.keepOnNaturalDeath = config.getBoolean("worlds." + worldName + ".keep-on-natural-death", globalOptions.keepOnNaturalDeath);
             worldOptions.keepOnMobDeath = config.getBoolean("worlds." + worldName + ".keep-on-mob-death", globalOptions.keepOnMobDeath);
+            worldOptions.keepOnSuicide = config.getBoolean("worlds." + worldName + ".keep-on-suicide", globalOptions.keepOnSuicide);
             worlds.put(worldName, worldOptions);
         }
     }

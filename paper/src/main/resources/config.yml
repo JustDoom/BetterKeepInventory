@@ -11,6 +11,8 @@ keep-on-player-death: false
 keep-on-natural-death: true
 # Should the player keep their inventory when killed by a mob
 keep-on-mob-death: true
+# Should the player keep their inventory if they kill themself. With arrows, end crystal etc
+keep-on-suicide: false
 
 # World specific settings. These will override the above global settings for the specified world
 worlds:
