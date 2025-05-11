@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.5-R0.1-SNAPSHOT")
     compileOnly("com.github.amnoah.betterreload:api:v1.0.0")
     implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation(project(":common"))
@@ -30,7 +30,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("1.21.5")
         dependsOn(shadowJar)
     }
 
