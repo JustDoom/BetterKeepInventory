@@ -24,7 +24,7 @@ public class SpongeConfig extends Configuration {
         try {
             root = LOADER.load();
         } catch (IOException e) {
-            BetterKeepInventorySponge.get().getLogger().error("An error occurred while loading this configuration: " + e.getMessage());
+            BetterKeepInventorySponge.get().getLogger().error("An error occurred while loading this configuration: {}", e.getMessage());
             if (e.getCause() != null) {
                 e.getCause().printStackTrace();
             }

@@ -24,6 +24,8 @@ public class PaperConfig extends Configuration {
         globalOptions.keepOnNaturalDeath = config.getBoolean("keep-on-natural-death", globalOptions.keepOnNaturalDeath);
         globalOptions.keepOnMobDeath = config.getBoolean("keep-on-mob-death", globalOptions.keepOnMobDeath);
         globalOptions.keepOnSuicide = config.getBoolean("keep-on-suicide", globalOptions.keepOnSuicide);
+        globalOptions.keepInventory = config.getBoolean("keep-inventory-items-on-death", globalOptions.keepInventory);
+        globalOptions.keepExp = config.getDouble("keep-exp-on-death", globalOptions.keepExp);
 
         // Get world specific options
         for (String worldName : config.getConfigurationSection("worlds").getKeys(false)) {
@@ -56,6 +58,8 @@ public class PaperConfig extends Configuration {
             worldOptions.keepOnNaturalDeath = config.getBoolean("worlds." + worldName + ".keep-on-natural-death", globalOptions.keepOnNaturalDeath);
             worldOptions.keepOnMobDeath = config.getBoolean("worlds." + worldName + ".keep-on-mob-death", globalOptions.keepOnMobDeath);
             worldOptions.keepOnSuicide = config.getBoolean("worlds." + worldName + ".keep-on-suicide", globalOptions.keepOnSuicide);
+            worldOptions.keepInventory = config.getBoolean("worlds." + worldName + ".keep-inventory-items-on-death", worldOptions.keepInventory);
+            worldOptions.keepExp = config.getDouble("worlds." + worldName + ".keep-exp-on-death", worldOptions.keepExp);
             worlds.put(worldName, worldOptions);
         }
     }

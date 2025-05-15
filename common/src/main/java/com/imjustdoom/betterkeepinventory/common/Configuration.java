@@ -10,6 +10,9 @@ public abstract class Configuration {
         public boolean keepOnNaturalDeath = true;
         public boolean keepOnMobDeath = true;
         public boolean keepOnSuicide = false;
+
+        public boolean keepInventory = true;
+        public double keepExp = 1;
     }
 
     public Options globalOptions;

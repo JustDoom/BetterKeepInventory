@@ -2,17 +2,29 @@
 
 # Global default settings that affect all worlds. Set all of them to false for vanilla functionality (No keep inventory)
 
-# Should the permission "betterkeepinventory.keep" be required for a player to keep their inventory
-# If false everyone will keep their inventory
+# "keep" refers to what should be kept when the player dies which is not configurable
+
+# Should the permission "betterkeepinventory.keep" be required for a player to "keep" on death
+# If false everyone will "keep"
 require-permission: false
-# Should the player keep their inventory when killed by another player
+# Should the player "keep" when killed by another player
 keep-on-player-death: false
-# Should the player keep their inventory on a natural death. Fall damage, starving, drowning etc
+# Should the player "keep" on a natural death. Fall damage, starving, drowning etc
 keep-on-natural-death: true
-# Should the player keep their inventory when killed by a mob
+# Should the player "keep" when killed by a mob
 keep-on-mob-death: true
-# Should the player keep their inventory if they kill themself. With arrows, end crystal etc
+# Should the player "keep" if they commited suicide. With arrows, end crystal etc
 keep-on-suicide: false
+
+# "keep" settings
+
+# When the player dies should their inventory be kept
+keep-inventory-items-on-death: true
+# When the player dies should their EXP level be kept.
+# The higher level you are the more EXP needed to level up so dying with 10 levels and 50% keep EXP will not respawn the player with 5 levels
+# The value can also be a number from 0 to 1, with 1 meaning that all EXP is kept and 0 is none
+# 0.5 - Keeps only half the EXP
+keep-exp-on-death: 1.0
 
 # World specific settings. These will override the above global settings for the specified world
 worlds:
@@ -24,10 +36,14 @@ worlds:
     keep-on-killed-by-player: false
     keep-on-natural-death: true
     keep-on-mob-death: true
+    keep-inventory-items-on-death: true
+    keep-exp-on-death: 0.5
   world_nether:
     enabled: false
     require-permission: true
     keep-on-killed-by-player: false
+    keep-inventory-items-on-death: true
+    keep-exp-on-death: 1.0
     # The "keep-on-natural-death" and "keep-on-mob-death" options have been left out. These two will default to the global
     # defaults set at the top of the file while the other settings that are specified will have whatever option is set
     # above inside the world section
