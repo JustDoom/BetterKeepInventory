@@ -21,7 +21,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
       - name: Build with gradle
-        run: ./gradlew clean shadowJar
+        run: ./gradlew clean shadowJar -PbuildWithGitHash=true
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
