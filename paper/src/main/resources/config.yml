@@ -7,7 +7,8 @@
 # Should the permission "betterkeepinventory.keep" be required for a player to "keep" on death
 # If false everyone will "keep"
 require-permission: false
-# Should the player "keep" when killed by another player
+# Should the player "keep" when killed by another player. This uses a combat tracker so it counts even if it is not a "direct" player kill
+# e.g. If a player falls or burns to death while in combat this will classify as a player death. Uses Minecrafts built in tracker
 keep-on-player-death: false
 # Should the player "keep" on a natural death. Fall damage, starving, drowning etc
 keep-on-natural-death: true

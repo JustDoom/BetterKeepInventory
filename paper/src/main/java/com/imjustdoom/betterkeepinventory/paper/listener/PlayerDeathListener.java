@@ -2,6 +2,7 @@ package com.imjustdoom.betterkeepinventory.paper.listener;
 
 import com.imjustdoom.betterkeepinventory.paper.BetterKeepInventoryPaper;
 import com.imjustdoom.betterkeepinventory.paper.PaperConfig;
+import io.papermc.paper.world.damagesource.CombatEntry;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -21,9 +22,17 @@ public class PlayerDeathListener implements Listener {
         }
 
         Entity killer = player.getLastDamageCause().getDamageSource().getCausingEntity();
-        if ((options.keepOnNaturalDeath && killer == null)
+        boolean isInPlayerCombat = false;
+        for (CombatEntry entry : player.getCombatTracker().getCombatEntries()) {
+            if (entry.getDamageSource().getCausingEntity() instanceof Player tempKiller && player != tempKiller && player.getCombatTracker().isInCombat()) {
+                isInPlayerCombat = true;
+                break;
+            }
+        }
+
+        if ((options.keepOnPlayerDeath && isInPlayerCombat) ||
+                (options.keepOnNaturalDeath && killer == null)
                 || (options.keepOnMobDeath && killer instanceof Mob)
-                || (options.keepOnPlayerDeath && killer instanceof Player && player != killer)
                 || (options.keepOnSuicide && killer == player)) {
             if (options.keepInventory) {
                 event.setKeepInventory(true);
