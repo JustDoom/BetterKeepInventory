@@ -6,7 +6,7 @@ plugins {
     id("org.spongepowered.gradle.plugin") version "2.3.0" apply false
 }
 
-if (project.hasProperty("buildWithGitHash")) {
+if (!project.hasProperty("buildWithoutGitHash")) {
     fun getShortCommitHash(): Provider<String> = providers.exec {
         commandLine("git", "rev-parse", "--short", "HEAD")
     }.standardOutput.asText.map { it.trim().ifEmpty { "unknown" } }
